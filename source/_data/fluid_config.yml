@@ -4,7 +4,7 @@ navbar:
     enable: true
 index:
   banner_img: /images/uploads/1.jpg
-  banner_img_height: 100
+  banner_img_height: 50
   slogan:
     text: Still Water
 post:
