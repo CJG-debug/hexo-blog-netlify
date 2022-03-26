@@ -140,4 +140,117 @@ int main() {
 如果，这个人找不到讨论对象，就可以把连向他的所有边删掉。   
 找到就直接输出。   
 
+---
+
 其实可以把这个做法卡到 $\mathcal{O(n^2)}$ 。   
+但是我觉得出题人不会这样造数据。 /xyx
+
+### Code
+
+<details>
+
+```cpp
+#include <cstdio>
+#include <vector>
+#include <cstring>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+const int MAXN = 5e6 + 5;
+
+inline void read(int& x) {
+	x = 0; int f = 1;
+	char c = getchar();
+	while (c < '0' || c > '9') {
+		if (c == '-') f = -f;
+		c = getchar();
+	}
+	while (c >= '0' && c <= '9') {
+		x = (x << 3) + (x << 1) + (c ^ 48);
+		c = getchar();
+	}
+	x *= f;
+}
+
+inline void write(int x) {
+	if (x < 0) {
+		putchar('-');
+		x = -x;
+	}
+	if (x > 9)
+		write(x / 10);
+	putchar(x % 10 + '0');
+}
+
+int t, n, tot[MAXN], cnt[MAXN], ans1, ans2;
+vector<int> G[MAXN], pos;
+
+int main() {
+
+	freopen("discuss.in", "r", stdin);
+	freopen("discuss.out", "w", stdout);
+
+	// scanf("%d", &t);
+	read(t);
+
+	while (t--) {
+
+		// scanf("%d", &n);
+		read(n);
+		// printf("!!%d!!\n", n);
+		ans1 = ans2 = 0;
+		for (int i = 1; i <= 2 * n; i++) G[i].clear();
+		for (int i = 1, k; i <= n; i++) {
+			// scanf("%d", &k);
+			read(k);
+			cnt[i] = k;
+			for (int j = 1, x; j <= k; j++) {
+				// scanf("%d", &x);
+				read(x);
+				G[i].push_back(x + n);
+				G[x + n].push_back(i);
+			}
+		}
+
+		bool flag = false;
+		for (int i = n; i >= 1; i--) {
+			pos.clear();
+
+			for (int j = 0; j < G[i].size(); j++) {
+				int u = G[i][j];
+				G[u].pop_back();
+				for (int k = 0; k < G[u].size(); k++) {
+					int v = G[u][k];
+					tot[v]++;
+					if (tot[v] == 1) pos.push_back(v);
+				}
+			}
+
+			for (int j = 0; j < pos.size(); j++) {
+				if (tot[pos[j]] < cnt[pos[j]] && tot[pos[j]] < cnt[i]) {
+					// printf("%d %d %d\n", tot[pos[j]], cnt[pos[j]], cnt[i]);
+					ans1 = i, ans2 = pos[j];
+					flag = true;
+					break;
+				}
+			}
+			for (int j = 0; j < pos.size(); j++) tot[pos[j]] = 0;
+
+			if (flag) {
+				break;
+			}
+
+		}
+		if (flag) {
+			printf("YES\n%d %d\n", ans1, ans2);
+		} else {
+			printf("NO\n");
+		}
+
+	}
+
+	return 0;
+}
+```
+
+</details>
