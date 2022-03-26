@@ -254,3 +254,11 @@ int main() {
 ```
 
 </details>
+
+## 如何正确地排序
+### Link
+[link](https://www.luogu.com.cn/problem/P8253)
+### Sol
+不会了。
+### Code
+
